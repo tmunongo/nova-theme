@@ -5,14 +5,14 @@ date: 2026-01-01
 description: "About the author and this site"
 ---
 
-Welcome to the about page. This page demonstrates the clean, unified-width editorial layout of the Nova theme.
+Welcome to the about page. This page demonstrates the clean editorial layout of the Nova theme.
 
 ## Philosophy & Focus
 
 Nova is designed around three core principles:
 
 * **Dark & Light Modes:** Seamless support for dark and light palettes with instant no-flicker loading and an accessible header toggle.
-* **Customizable Terminology & Modular Sections:** Use standard terms (Posts, Notes, Projects, About) or customize them (Signal, Substrate, Forge, Observatory, Workbench) via `hugo.toml`. Sections like Projects, Recommended Reads, and CTAs are completely optional.
+* **Customizable Terminology & Modular Sections:** Use standard terms (Posts, Notes, Projects, About) or customize them using the `hugo.toml` file. Sections like Projects, Recommended Reads, and CTAs are completely optional.
 
 ## Technical Architecture
 

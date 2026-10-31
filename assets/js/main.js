@@ -32,7 +32,7 @@
   function initCodeCopy() {
     var codeBlocks = document.querySelectorAll('pre, .highlight pre');
     codeBlocks.forEach(function (pre) {
-      if (pre.closest('.no-copy')) return;
+      if (pre.closest('.no-copy') || pre.classList.contains('mermaid') || pre.closest('.mermaid')) return;
 
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';

@@ -700,6 +700,32 @@ pre code {
   border-color: var(--accent-signal);
 }
 
+/* Mermaid Diagrams */
+.mermaid-rendered-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: var(--space-8) 0;
+  text-align: center;
+}
+
+.mermaid-rendered-container svg {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+pre.mermaid,
+.mermaid {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--bg-1);
+  border: var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
 /* Tables inside Prose */
 .table-scroll-wrapper {
   width: 100%;

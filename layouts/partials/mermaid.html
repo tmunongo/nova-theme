@@ -1,14 +1,15 @@
 <script type="module">
   (async function setupMermaid() {
     const mermaidElements = document.querySelectorAll(
-      'pre.mermaid, pre > code.language-mermaid, .mermaid, pre[data-language="mermaid"]'
+      'pre.mermaid, pre > code.language-mermaid, .mermaid, pre[data-language="mermaid"], code[class*="mermaid"]'
     );
     if (!mermaidElements.length) return;
 
     try {
-      const { default: mermaid } = await import(
+      const mermaidModule = await import(
         'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
       );
+      const mermaid = mermaidModule.default || mermaidModule;
 
       function getThemeVariables(isLight) {
         if (isLight) {
@@ -123,9 +124,12 @@
           const entry = entries[i];
           try {
             const uniqueId = entry.id + '-' + token;
-            const { svg } = await mermaid.render(uniqueId, entry.code);
+            const { svg, bindFunctions } = await mermaid.render(uniqueId, entry.code);
             if (token !== renderToken) return;
             entry.container.innerHTML = svg;
+            if (typeof bindFunctions === 'function') {
+              bindFunctions(entry.container);
+            }
             // Hide source only after a successful render
             entry.sourcePre.style.display = 'none';
           } catch (err) {
@@ -133,6 +137,8 @@
             // Leave sourcePre visible so the user sees the raw diagram source
             entry.container.innerHTML = '';
             entry.sourcePre.style.display = '';
+            const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
+            if (stray) stray.remove();
           }
         }
       }
