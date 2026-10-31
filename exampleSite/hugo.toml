@@ -1,6 +1,6 @@
 baseURL = "https://example.org/"
 languageCode = "en-us"
-title = "Nova Observatory"
+title = "My Blog"
 theme = "nova"
 
 [taxonomies]
@@ -10,66 +10,103 @@ theme = "nova"
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = true
+      unsafe = true # Allows raw HTML in markdown when needed
   [markup.highlight]
     noClasses = false
     guessSyntax = true
     lineNos = false
 
 [params]
-  description = "A sleek, dark, terminal-inspired minimalist theme for engineers and writers."
+  description = "A clean, dark & light minimalist theme with a unified reading width."
   logo_text = "nova"
-  # Unified container width: prevents jarring jumping between pages
+
+  # Theme mode: "auto" (follows system OS preference), "dark", or "light"
+  default_theme = "auto"
+
+  # Unified container width: prevents jarring width jumps across pages
+  # Recommended: "860px", "880px", or "900px"
   container_width = "880px"
 
   [params.author]
-    name = "Nova Author"
-    fediverse = "author@example.social"
+    name = "Author Name"
+    fediverse = ""
 
   [params.social]
     github = "example"
-    fediverse = "https://example.social/@author"
+    # twitter = "example"
+    # fediverse = "https://example.social/@example"
 
+  # Optional Hero on Home Page (leave empty or remove to disable)
   [params.hero]
-    role = "Systems & Product Engineer"
+    role = "Software Engineer & Writer"
     title = ""
-    description = "Welcome to Nova. A dark, terminal-inspired theme built for systems thinkers, engineers, and digital craftsmen.<br><br>Fast, responsive, and designed with a unified reading width across all pages."
+    description = "Writing about software engineering, distributed systems, and modern technology."
 
+  # Feature Toggles (All optional!)
+  [params.features]
+    recommended = true   # Set to false to disable the Recommended Reads section
+    projects = true      # Set to false if you do not want a Projects section
+
+  # Optional Call-To-Action (Disabled by default)
   [params.cta]
+    enable = false
     title = "Need Something Built?"
-    text = "Available for select engineering, systems architecture, and advisory contracts."
-    button_text = "Visit The Workbench →"
-    url = "/consulting/"
+    text = "Available for select engineering and advisory contracts."
+    button_text = "Get In Touch →"
+    url = "/about/"
 
+  # ----------------------------------------------------------------------------
+  # Customizable Labels / Terminology
+  # Use standard terms (default) or customize with your own personal branding
+  # (e.g., Signal, Substrate, Forge, Observatory, Workbench):
+  # ----------------------------------------------------------------------------
+  [params.labels]
+    posts = "Posts"                     # e.g. "The Signal"
+    latest_posts = "Latest Posts"       # e.g. "Latest Signals"
+    all_posts = "All posts (%d) →"
+    recommended = "Recommended Reads"
+    notes = "Notes"                     # e.g. "The Substrate"
+    all_notes = "All Notes"
+    projects = "Projects"               # e.g. "The Forge"
+    all_projects = "All projects →"
+    project_live = "live"
+    project_source = "source"
+    filter_year = "Year"
+    filter_tags = "Tags"
+    filter_all = "All"
+    clear_filters = "clear filters"
+    no_posts = "No posts published yet."
+    no_matching_posts = "No posts match the selected filters."
+
+# ----------------------------------------------------------------------------
+# Navigation Menu
+# Keep it barebones (e.g. Posts & About) or add Notes, Projects, etc.
+# ----------------------------------------------------------------------------
 [menu]
   [[menu.main]]
-    name = "Signal"
+    name = "Posts"
     url = "/posts/"
     weight = 10
 
   [[menu.main]]
-    name = "Substrate"
+    name = "Notes"
     url = "/notes/"
     weight = 20
 
   [[menu.main]]
-    name = "Observatory"
-    url = "/about/"
+    name = "Projects"
+    url = "/projects/"
     weight = 30
 
   [[menu.main]]
-    name = "Forge"
-    url = "/projects/"
+    name = "About"
+    url = "/about/"
     weight = 40
 
-  [[menu.main]]
-    name = "Library"
-    url = "/library/"
-    weight = 50
-
-  [[menu.main]]
-    name = "Workbench"
-    url = "/consulting/"
-    weight = 60
-    [menu.main.params]
-      class = "workbench-cta"
+  # Example CTA menu button with custom styling:
+  # [[menu.main]]
+  #   name = "Workbench"
+  #   url = "/consulting/"
+  #   weight = 50
+  #   [menu.main.params]
+  #     class = "workbench-cta"

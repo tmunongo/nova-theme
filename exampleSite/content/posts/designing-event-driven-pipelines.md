@@ -76,3 +76,4 @@ When background queue workers fail, backoff schedules must prevent thundering he
 | Dead Letter Queue | Manual replay & alert | 7 days retention |
 
 By separating ingress validation from execution, your system remains responsive even during downstream degradation.
+

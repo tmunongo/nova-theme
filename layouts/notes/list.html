@@ -1,7 +1,7 @@
 {{ define "main" }}
   <div class="page-header">
     <div class="page-title-row">
-      <h1>{{ .Title | default "The Substrate" }}</h1>
+      <h1>{{ with .Params.title }}{{ . }}{{ else }}{{ site.Params.labels.notes | default "Notes" }}{{ end }}</h1>
       {{ with .OutputFormats.Get "rss" }}
         <a href="{{ .RelPermalink }}" aria-label="Notes RSS Feed" class="rss-icon-link">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -14,8 +14,6 @@
     </div>
     {{ with .Description | default .Params.subtitle }}
       <p class="page-subtitle">{{ . }}</p>
-    {{ else }}
-      <p class="page-subtitle">Quick thoughts, observations, and micro-essays. No separate pages &mdash; everything lives here.</p>
     {{ end }}
   </div>
 
@@ -50,7 +48,7 @@
       </article>
     {{ else }}
       <div class="no-results mono">
-        <p>No notes yet. The substrate is forming...</p>
+        <p>{{ site.Params.labels.no_notes | default "No notes published yet." }}</p>
       </div>
     {{ end }}
   </div>

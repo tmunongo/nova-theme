@@ -57,3 +57,4 @@ export async function executeTool(name: string, args: Record<string, unknown>) {
 ```
 
 Predictable contracts produce dependable agent workflows.
+

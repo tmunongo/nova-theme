@@ -8,6 +8,23 @@
 <meta name="description" content="{{ . }}">
 {{ end }}
 
+<!-- Prevent Flash of Unstyled Theme (FOUC) -->
+<script>
+  (function () {
+    var storedTheme;
+    try { storedTheme = localStorage.getItem('nova-theme'); } catch (e) {}
+    var defaultTheme = '{{ site.Params.default_theme | default "auto" }}';
+    if (storedTheme) {
+      document.documentElement.setAttribute('data-theme', storedTheme);
+    } else if (defaultTheme === 'auto') {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', defaultTheme);
+    }
+  })();
+</script>
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">

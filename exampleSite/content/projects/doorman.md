@@ -16,3 +16,4 @@ Doorman is an open-source, privacy-first analytics micro-service engineered for 
 * Under 15MB RAM baseline footprint
 * Cookieless session hashing adhering strictly to privacy regulations
 * In-memory buffer flush with deterministic persistence routines
+

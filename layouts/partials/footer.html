@@ -18,14 +18,20 @@
           <a href="https://twitter.com/{{ . }}" target="_blank" rel="noopener">Twitter</a>
         {{ end }}
 
-        {{ with site.GetPage "section" "posts" }}
-          <a href="{{ .RelPermalink }}index.xml">Signal RSS</a>
+        <!-- Main RSS or Section RSS -->
+        {{ $postsSection := site.GetPage "section" "posts" }}
+        {{ if not $postsSection }}
+          {{ $postsSection = site.GetPage "section" "blog" }}
+        {{ end }}
+
+        {{ with $postsSection }}
+          <a href="{{ .RelPermalink }}index.xml">{{ $.Site.Params.labels.posts_rss | default (printf "%s RSS" .Title) }}</a>
         {{ else }}
           <a href="{{ "index.xml" | relURL }}">RSS</a>
         {{ end }}
 
         {{ with site.GetPage "section" "notes" }}
-          <a href="{{ .RelPermalink }}index.xml">Substrate RSS</a>
+          <a href="{{ .RelPermalink }}index.xml">{{ $.Site.Params.labels.notes_rss | default (printf "%s RSS" .Title) }}</a>
         {{ end }}
       </div>
     </div>

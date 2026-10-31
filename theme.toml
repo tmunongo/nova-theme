@@ -2,7 +2,7 @@
 name = "Nova"
 license = "MIT"
 licenselink = "https://github.com/tmunongo/nova/blob/main/LICENSE"
-description = "A sleek, dark, terminal-inspired minimalist theme for engineers and writers."
+description = "A sleek, dark and light minimalist theme with unified layout widths, customizable terminology, and modular optional sections."
 homepage = "https://github.com/tmunongo/nova"
 demosite = ""
 tags = [
@@ -11,6 +11,7 @@ tags = [
   "portfolio",
   "clean",
   "dark",
+  "light",
   "terminal",
   "responsive",
   "developer",
@@ -20,12 +21,16 @@ tags = [
   "vanilla-js"
 ]
 features = [
-  "dark mode",
+  "dark and light modes",
+  "zero-flicker theme toggle with system preference detection",
+  "consistent unified container width across all pages",
+  "fully customizable labels and terminology",
+  "modular optional sections (projects, notes, recommended reads, cta)",
   "reading progress indicator",
   "interactive tag & year filter",
   "micro-essay notes stream",
   "project showcase with live links",
-  "mermaid diagram support",
+  "mermaid diagram support with dark/light switching",
   "code copy buttons",
   "fast vanilla assets without heavy dependencies",
   "seo and open graph ready"

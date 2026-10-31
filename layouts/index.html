@@ -1,62 +1,75 @@
 {{ define "main" }}
-  <!-- Hero Section -->
-  <section class="hero">
-    {{ with site.Params.hero.role }}
-      <p class="hero-role mono">{{ . }}</p>
-    {{ end }}
-
-    {{ with site.Params.hero.title }}
-      <h1 class="hero-title">{{ . }}</h1>
-    {{ end }}
-
-    {{ if .Content }}
-      <div class="hero-description prose">
-        {{ .Content }}
-      </div>
-    {{ else }}
-      {{ with site.Params.hero.description }}
-        <p class="hero-description">{{ . | markdownify }}</p>
+  <!-- Hero Section (Optional) -->
+  {{ $hasHeroParams := or site.Params.hero.role site.Params.hero.title site.Params.hero.description }}
+  {{ if or .Content $hasHeroParams }}
+    <section class="hero">
+      {{ with site.Params.hero.role }}
+        <p class="hero-role mono">{{ . }}</p>
       {{ end }}
-    {{ end }}
-  </section>
 
-  <!-- Recommended Reads -->
-  {{ $allPosts := where site.RegularPages "Section" "posts" }}
-  {{ if not $allPosts }}
-    {{ $allPosts = where site.RegularPages "Type" "posts" }}
-  {{ end }}
-  {{ $recommended := where $allPosts "Params.recommended" true }}
+      {{ with site.Params.hero.title }}
+        <h1 class="hero-title">{{ . }}</h1>
+      {{ end }}
 
-  {{ if $recommended }}
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Recommended Reads</h2>
-        <span class="section-meta mono">{{ len $recommended }} posts</span>
-      </div>
-      <ol class="post-list">
-        {{ range first 5 $recommended }}
-          <li class="post-row">
-            <a href="{{ .RelPermalink }}" class="post-row-title">{{ .Title }}</a>
-            <time class="post-row-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-              {{ .Date.Format "Jan 02, 2006" }}
-            </time>
-          </li>
+      {{ if .Content }}
+        <div class="hero-description prose">
+          {{ .Content }}
+        </div>
+      {{ else }}
+        {{ with site.Params.hero.description }}
+          <p class="hero-description">{{ . | markdownify }}</p>
         {{ end }}
-      </ol>
+      {{ end }}
     </section>
   {{ end }}
 
-  <!-- Latest Signals -->
+  <!-- Find all posts (supports section "posts" or "blog"; stays empty otherwise) -->
+  {{ $postsSectionPage := site.GetPage "section" "posts" }}
+  {{ if not $postsSectionPage }}
+    {{ $postsSectionPage = site.GetPage "section" "blog" }}
+  {{ end }}
+  {{ $allPosts := slice }}
+  {{ with $postsSectionPage }}
+    {{ $allPosts = .Pages }}
+  {{ end }}
+
+  <!-- Recommended Reads (Optional: only if posts with recommended: true exist and not disabled) -->
+  {{ if ne site.Params.features.recommended false }}
+    {{ $recommended := where $allPosts "Params.recommended" true }}
+    {{ if $recommended }}
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">{{ site.Params.labels.recommended | default "Recommended" }}</h2>
+          <span class="section-meta mono">{{ len $recommended }}</span>
+        </div>
+        <ol class="post-list">
+          {{ range first 5 $recommended }}
+            <li class="post-row">
+              <a href="{{ .RelPermalink }}" class="post-row-title">{{ .Title }}</a>
+              <time class="post-row-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                {{ .Date.Format "Jan 02, 2006" }}
+              </time>
+            </li>
+          {{ end }}
+        </ol>
+      </section>
+    {{ end }}
+  {{ end }}
+
+  <!-- Latest Posts / Main Feed -->
   {{ if $allPosts }}
     <section class="section">
       <div class="section-header">
-        <h2 class="section-title">Latest Signals</h2>
-        {{ with site.GetPage "section" "posts" }}
-          <a href="{{ .RelPermalink }}" class="mono section-link">All posts ({{ len $allPosts }}) &rarr;</a>
+        <h2 class="section-title">{{ site.Params.labels.latest_posts | default "Latest Posts" }}</h2>
+        {{ with $postsSectionPage }}
+          <a href="{{ .RelPermalink }}" class="mono section-link">
+            {{ site.Params.labels.all_posts | default "All posts →" }}
+          </a>
         {{ end }}
       </div>
       <ol class="post-list">
-        {{ range first 8 $allPosts }}
+        {{ $limit := site.Params.home_posts_limit | default 8 }}
+        {{ range first $limit $allPosts }}
           <li class="post-row">
             <a href="{{ .RelPermalink }}" class="post-row-title">{{ .Title }}</a>
             <time class="post-row-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
@@ -68,61 +81,65 @@
     </section>
   {{ end }}
 
-  <!-- From The Forge (Featured Projects) -->
-  {{ $projects := where site.RegularPages "Section" "projects" }}
-  {{ $featuredProjects := where $projects "Params.featured" true }}
-  {{ if not $featuredProjects }}
-    {{ $featuredProjects = first 3 $projects }}
-  {{ end }}
+  <!-- Projects Section (Optional: only if projects section exists, has pages, and not disabled) -->
+  {{ if ne site.Params.features.projects false }}
+    {{ $projects := where site.RegularPages "Section" "projects" }}
+    {{ if $projects }}
+      {{ $featuredProjects := where $projects "Params.featured" true }}
+      {{ if not $featuredProjects }}
+        {{ $featuredProjects = first 3 $projects }}
+      {{ end }}
 
-  {{ if $featuredProjects }}
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">From The Forge</h2>
-        {{ with site.GetPage "section" "projects" }}
-          <a href="{{ .RelPermalink }}" class="mono section-link">All projects &rarr;</a>
-        {{ end }}
-      </div>
-      <ol class="project-list">
-        {{ range first 3 $featuredProjects }}
-          <li class="project-item">
-            <div class="project-header">
-              <div class="project-title-group">
-                <a href="{{ .RelPermalink }}" class="project-title">{{ .Title }}</a>
-                <span class="project-links mono">
-                  {{ with .Params.link }}
-                    <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">live &#8599;</a>
-                  {{ end }}
-                  {{ with .Params.github }}
-                    <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">gh &#8599;</a>
-                  {{ end }}
-                </span>
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">{{ site.Params.labels.projects | default "Projects" }}</h2>
+          {{ with site.GetPage "section" "projects" }}
+            <a href="{{ .RelPermalink }}" class="mono section-link">{{ site.Params.labels.all_projects | default "All projects →" }}</a>
+          {{ end }}
+        </div>
+        <ol class="project-list">
+          {{ range first 3 $featuredProjects }}
+            <li class="project-item">
+              <div class="project-header">
+                <div class="project-title-group">
+                  <a href="{{ .RelPermalink }}" class="project-title">{{ .Title }}</a>
+                  <span class="project-links mono">
+                    {{ with .Params.link }}
+                      <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">live &#8599;</a>
+                    {{ end }}
+                    {{ with .Params.github }}
+                      <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">gh &#8599;</a>
+                    {{ end }}
+                  </span>
+                </div>
+                <time class="project-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                  {{ .Date.Format "Jan 2006" }}
+                </time>
               </div>
-              <time class="project-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-                {{ .Date.Format "Jan 2006" }}
-              </time>
-            </div>
-            {{ with .Params.description }}
-              <p class="project-desc">{{ . }}</p>
-            {{ end }}
-          </li>
-        {{ end }}
-      </ol>
-    </section>
+              {{ with .Params.description }}
+                <p class="project-desc">{{ . }}</p>
+              {{ end }}
+            </li>
+          {{ end }}
+        </ol>
+      </section>
+    {{ end }}
   {{ end }}
 
-  <!-- CTA Section -->
-  {{ with site.Params.cta }}
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">{{ .title | default "Need Something Built?" }}</h2>
-      </div>
-      <p class="cta-text">
-        {{ .text | default "I'm available for select projects in web, mobile, and systems development." }}
-        {{ with .url }}
-          <a href="{{ . }}" class="cta-link mono">{{ $.Site.Params.cta.button_text | default "Visit The Workbench →" }}</a>
-        {{ end }}
-      </p>
-    </section>
+  <!-- CTA Section (Optional: only if explicitly configured and enabled) -->
+  {{ if site.Params.cta.enable }}
+    {{ with site.Params.cta }}
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">{{ .title | default "Get In Touch" }}</h2>
+        </div>
+        <p class="cta-text">
+          {{ .text }}
+          {{ with .url }}
+            <a href="{{ . }}" class="cta-link mono">{{ $.Site.Params.cta.button_text | default "Contact →" }}</a>
+          {{ end }}
+        </p>
+      </section>
+    {{ end }}
   {{ end }}
 {{ end }}

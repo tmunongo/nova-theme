@@ -8,7 +8,6 @@ Inspired by observatory telemetry, monospace terminals, and clean editorial read
 
 ## Highlights & Design Philosophy
 
-- **Unified Reading Width:** Solves the jarring layout jumps found in many multi-page themes. Every page—from the home hero and project listings to in-depth prose articles and service breakdowns—shares a unified container grid (`880px` by default, fully configurable via `params.container_width`).
 - **Dark Terminal Aesthetic:** Deep obsidian palette (`#0f0f11`), subtle hairlines, terminal green signal accents (`#26d07c`), astronomy blue links (`#6aa6ff`), and warm rust highlights (`#d45b45`).
 - **Signal Progress Bar:** A smooth, glowing top reading progress indicator that appears dynamically as you scroll through long-form articles.
 - **Interactive Post Filtering:** Client-side filter panel on the **Signal** (posts) archive with instantaneous tag and year filtering, live counters, and zero page reloads.

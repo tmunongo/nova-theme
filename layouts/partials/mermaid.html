@@ -1,5 +1,5 @@
 <script type="module">
-  (async function renderMermaid() {
+  (async function setupMermaid() {
     const mermaidElements = document.querySelectorAll(
       'pre.mermaid, pre > code.language-mermaid, .mermaid, pre[data-language="mermaid"]'
     );
@@ -10,12 +10,41 @@
         'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
       );
 
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: 'base',
-        securityLevel: 'loose',
-        fontFamily: '"Berkeley Mono", "IBM Plex Mono", Consolas, monospace',
-        themeVariables: {
+      function getThemeVariables(isLight) {
+        if (isLight) {
+          return {
+            darkMode: false,
+            background: '#f0eee6',
+            mainBkg: '#f0eee6',
+            textColor: '#18191b',
+            primaryColor: '#e4e2d8',
+            primaryTextColor: '#18191b',
+            primaryBorderColor: '#1b5ed9',
+            lineColor: '#1b5ed9',
+            secondaryColor: '#faf9f6',
+            tertiaryColor: '#f0eee6',
+            noteBkgColor: '#f0eee6',
+            noteTextColor: '#18191b',
+            noteBorderColor: '#0b7c3d',
+            actorBkg: '#e4e2d8',
+            actorBorder: '#1b5ed9',
+            actorTextColor: '#18191b',
+            actorLineColor: '#1b5ed9',
+            signalColor: '#0b7c3d',
+            signalTextColor: '#18191b',
+            labelBoxBkgColor: '#e4e2d8',
+            labelBoxBorderColor: '#1b5ed9',
+            labelTextColor: '#18191b',
+            loopTextColor: '#18191b',
+            edgeLabelBackground: '#f0eee6',
+            clusterBkg: '#faf9f6',
+            clusterBorder: 'rgba(0, 0, 0, 0.15)',
+            nodeBorder: '#1b5ed9',
+            defaultLinkColor: '#1b5ed9',
+            titleColor: '#18191b',
+          };
+        }
+        return {
           darkMode: true,
           background: '#1a1c1f',
           mainBkg: '#1a1c1f',
@@ -45,30 +74,75 @@
           nodeBorder: '#6aa6ff',
           defaultLinkColor: '#6aa6ff',
           titleColor: '#e7e7e2',
-        },
+        };
+      }
+
+      // Collect entries, deduplicating by targetPre so a pre>code pair only produces one diagram
+      const entries = [];
+      const seenPres = new Set();
+      mermaidElements.forEach((el, index) => {
+        const targetPre = el.tagName.toLowerCase() === 'code' ? el.closest('pre') : el;
+        if (!targetPre || seenPres.has(targetPre)) return;
+        seenPres.add(targetPre);
+
+        const rawCode = (el.textContent || '').trim();
+        const placeholder = document.createElement('div');
+        placeholder.className = 'mermaid-rendered-container';
+        placeholder.style.overflowX = 'auto';
+        placeholder.style.margin = '2rem 0';
+        placeholder.style.textAlign = 'center';
+        // Insert placeholder but keep targetPre visible until render succeeds
+        targetPre.parentNode.insertBefore(placeholder, targetPre);
+
+        entries.push({
+          id: 'mermaid-diagram-' + index,
+          code: rawCode,
+          container: placeholder,
+          sourcePre: targetPre,
+        });
       });
 
-      for (let i = 0; i < mermaidElements.length; i++) {
-        const el = mermaidElements[i];
-        const targetPre = el.tagName.toLowerCase() === 'code' ? el.closest('pre') : el;
-        if (!targetPre || targetPre.dataset.mermaidRendered === 'true') continue;
+      let renderToken = 0;
 
-        const rawCode = el.textContent || '';
-        const id = 'mermaid-diagram-' + i;
-        const container = document.createElement('div');
-        container.className = 'mermaid-rendered-container';
-        container.style.overflowX = 'auto';
-        container.style.margin = '2rem 0';
-        container.style.textAlign = 'center';
+      async function renderAll() {
+        const token = ++renderToken;
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light' ||
+          (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: light)').matches);
 
-        try {
-          const { svg } = await mermaid.render(id, rawCode.trim());
-          container.innerHTML = svg;
-          targetPre.replaceWith(container);
-        } catch (err) {
-          console.error('Mermaid render error:', err);
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'base',
+          securityLevel: 'loose',
+          fontFamily: '"Berkeley Mono", "IBM Plex Mono", Consolas, monospace',
+          themeVariables: getThemeVariables(isLight),
+        });
+
+        for (let i = 0; i < entries.length; i++) {
+          // Bail if a newer render was requested while we were awaiting
+          if (token !== renderToken) return;
+          const entry = entries[i];
+          try {
+            const uniqueId = entry.id + '-' + token;
+            const { svg } = await mermaid.render(uniqueId, entry.code);
+            if (token !== renderToken) return;
+            entry.container.innerHTML = svg;
+            // Hide source only after a successful render
+            entry.sourcePre.style.display = 'none';
+          } catch (err) {
+            console.error('Mermaid render error:', err);
+            // Leave sourcePre visible so the user sees the raw diagram source
+            entry.container.innerHTML = '';
+            entry.sourcePre.style.display = '';
+          }
         }
       }
+
+      // Register theme-change listener BEFORE the initial render so no change is missed
+      window.addEventListener('nova:theme-change', () => {
+        renderAll();
+      });
+
+      await renderAll();
     } catch (e) {
       console.warn('Could not load Mermaid library:', e);
     }

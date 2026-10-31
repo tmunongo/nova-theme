@@ -1,21 +1,6 @@
 /* Nova Theme - Design Tokens & Variables */
+
 :root {
-  /* Base colors */
-  --bg-0: #0f0f11;
-  --bg-1: #1a1c1f;
-  --bg-2: #24272c;
-  --bg-hover: rgba(255, 255, 255, 0.04);
-  --fg-0: #e7e7e2;
-  --fg-1: #c7c6c0;
-  --fg-muted: #8b8a85;
-  --border-0: rgba(255, 255, 255, 0.08);
-
-  /* Accent colors */
-  --accent-sky: #6aa6ff;     /* Astronomy blue */
-  --accent-signal: #26d07c;  /* Terminal green */
-  --accent-neon: #b77cff;    /* Muted violet */
-  --accent-rust: #d45b45;    /* Classic-rock red / warm orange */
-
   /* Typography scale */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -47,10 +32,115 @@
   --container-width: 880px;
 
   /* Effects */
-  --hairline: 1px solid var(--border-0);
   --radius-sm: 3px;
   --radius-md: 6px;
   --radius-lg: 8px;
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
+}
+
+/* ========================================================= */
+/* Dark Theme (Default Nova Aesthetic)                       */
+/* ========================================================= */
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Base background & foreground */
+  --bg-0: #0f0f11;
+  --bg-1: #1a1c1f;
+  --bg-2: #24272c;
+  --bg-hover: rgba(255, 255, 255, 0.04);
+  --fg-0: #e7e7e2;
+  --fg-1: #c7c6c0;
+  --fg-muted: #8b8a85;
+  --border-0: rgba(255, 255, 255, 0.08);
+  --hairline: 1px solid var(--border-0);
+
+  /* Accent colors */
+  --accent-sky: #6aa6ff;     /* Astronomy blue */
+  --accent-signal: #26d07c;  /* Terminal green */
+  --accent-neon: #b77cff;    /* Muted violet */
+  --accent-rust: #d45b45;    /* Classic-rock red / warm orange */
+
+  /* Component specific tokens */
+  --table-head-bg: rgba(106, 166, 255, 0.08);
+  --table-head-border: #6aa6ff;
+  --table-th-border: rgba(106, 166, 255, 0.2);
+  --table-row-hover: rgba(106, 166, 255, 0.03);
+  --pill-active-bg: rgba(38, 208, 124, 0.15);
+  --accent-signal-border: rgba(38, 208, 124, 0.25);
+  --code-comment: #686862;
+  --code-lineno: #484b50;
+  --code-hl: rgba(106, 166, 255, 0.1);
+  --signal-glow: 0 0 10px var(--accent-signal);
+}
+
+/* ========================================================= */
+/* Light Theme (Clean Technical Editorial Paper)             */
+/* ========================================================= */
+html[data-theme="light"] {
+  color-scheme: light;
+
+  /* Base background & foreground */
+  --bg-0: #faf9f6;
+  --bg-1: #f0eee6;
+  --bg-2: #e4e2d8;
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --fg-0: #18191b;
+  --fg-1: #484b51;
+  --fg-muted: #72757d;
+  --border-0: rgba(0, 0, 0, 0.1);
+  --hairline: 1px solid var(--border-0);
+
+  /* High-contrast calibrated accent colors for light mode */
+  --accent-sky: #1b5ed9;     /* Deep astronomy blue */
+  --accent-signal: #0b7c3d;  /* Calibrated terminal green */
+  --accent-neon: #7028cf;    /* Crisp violet */
+  --accent-rust: #c2380f;    /* Warm rust red */
+
+  /* Component specific tokens */
+  --table-head-bg: rgba(27, 94, 217, 0.07);
+  --table-head-border: #1b5ed9;
+  --table-th-border: rgba(27, 94, 217, 0.2);
+  --table-row-hover: rgba(27, 94, 217, 0.03);
+  --pill-active-bg: rgba(11, 124, 61, 0.12);
+  --accent-signal-border: rgba(11, 124, 61, 0.25);
+  --code-comment: #72757d;
+  --code-lineno: #9ea1a8;
+  --code-hl: rgba(27, 94, 217, 0.08);
+  --signal-glow: 0 0 8px rgba(11, 124, 61, 0.4);
+}
+
+/* Automatic system preference when no explicit override is active */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --bg-0: #faf9f6;
+    --bg-1: #f0eee6;
+    --bg-2: #e4e2d8;
+    --bg-hover: rgba(0, 0, 0, 0.04);
+    --fg-0: #18191b;
+    --fg-1: #484b51;
+    --fg-muted: #72757d;
+    --border-0: rgba(0, 0, 0, 0.1);
+    --hairline: 1px solid var(--border-0);
+
+    --accent-sky: #1b5ed9;
+    --accent-signal: #0b7c3d;
+    --accent-neon: #7028cf;
+    --accent-rust: #c2380f;
+
+    --table-head-bg: rgba(27, 94, 217, 0.07);
+    --table-head-border: #1b5ed9;
+    --table-th-border: rgba(27, 94, 217, 0.2);
+    --table-row-hover: rgba(27, 94, 217, 0.03);
+    --pill-active-bg: rgba(11, 124, 61, 0.12);
+    --accent-signal-border: rgba(11, 124, 61, 0.25);
+    --code-comment: #72757d;
+    --code-lineno: #9ea1a8;
+    --code-hl: rgba(27, 94, 217, 0.08);
+    --signal-glow: 0 0 8px rgba(11, 124, 61, 0.4);
+  }
 }

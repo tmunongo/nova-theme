@@ -42,3 +42,4 @@ Under a load test of 10,000 concurrent requests:
 * **Covering Index:** 0.8ms average response time
 
 Designing indexes with intention produces order-of-magnitude improvements.
+

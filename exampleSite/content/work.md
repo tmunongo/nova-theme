@@ -1,15 +1,15 @@
 ---
-title: "I design and build resilient software systems."
-kicker: "The Workbench // Advisory & Engineering"
-subtitle: "Partnering with early-stage startups and technical teams to build scalable backend systems, robust APIs, and developer tooling."
+title: "Work & Projects"
+kicker: "Engineering & Systems"
+subtitle: "Selected production architectures, developer tools, and open-source systems designed for scale and durability."
 status: "Available for select contracts & technical advisory"
 date: 2026-01-01
-description: "Advisory, architecture, and engineering consulting services."
+description: "Selected engineering work, architecture case studies, and software projects."
 ---
 
 <div class="workbench-section">
   <div class="section-heading">
-    <h2 class="section-title">Capabilities</h2>
+    <h2 class="section-title">Core Disciplines</h2>
     <span class="section-meta mono">01 — What I Ship</span>
   </div>
 
@@ -17,10 +17,10 @@ description: "Advisory, architecture, and engineering consulting services."
     <article class="capability-item">
       <div class="capability-header">
         <span class="capability-index mono">01</span>
-        <h3 class="capability-title">Distributed Backends & Pipelines</h3>
+        <h3 class="capability-title">Distributed Systems & Event Pipelines</h3>
       </div>
       <p class="capability-desc">
-        High-throughput event ingestion engines, webhook processors, queue management, and transaction-safe database architectures.
+        High-throughput event ingestion engines, webhook processors, queue management, and transaction-safe database architectures that survive out-of-order delivery.
       </p>
       <div class="capability-stack mono">
         <span>Go</span>
@@ -37,7 +37,7 @@ description: "Advisory, architecture, and engineering consulting services."
         <h3 class="capability-title">Developer Tooling & Agent Infrastructure</h3>
       </div>
       <p class="capability-desc">
-        High-performance CLI utilities, automated build pipelines, and Model Context Protocol (MCP) servers tailored for AI pair-programming agents.
+        High-performance CLI utilities, automated build pipelines, and Model Context Protocol (MCP) servers tailored for autonomous AI agents and developer workflows.
       </p>
       <div class="capability-stack mono">
         <span>Model Context Protocol (MCP)</span>
@@ -50,10 +50,10 @@ description: "Advisory, architecture, and engineering consulting services."
     <article class="capability-item">
       <div class="capability-header">
         <span class="capability-index mono">03</span>
-        <h3 class="capability-title">Modern Web Applications</h3>
+        <h3 class="capability-title">Modern Web Platforms</h3>
       </div>
       <p class="capability-desc">
-        Clean, accessible, and resilient front-end applications built with modern web primitives and fast static site generators.
+        Fast, accessible, and resilient front-end applications built with modern web primitives, static site generators, and responsive design systems.
       </p>
       <div class="capability-stack mono">
         <span>Hugo</span>
@@ -67,8 +67,18 @@ description: "Advisory, architecture, and engineering consulting services."
 
 <div class="workbench-section">
   <div class="section-heading">
+    <h2 class="section-title">Selected Projects</h2>
+    <span class="section-meta mono">02 — Highlights</span>
+  </div>
+  <p>
+    Explore individual case studies and source repositories on the <a href="/projects/">Projects page &rarr;</a>
+  </p>
+</div>
+
+<div class="workbench-section">
+  <div class="section-heading">
     <h2 class="section-title">Get In Touch</h2>
-    <span class="section-meta mono">02 — Inquiries</span>
+    <span class="section-meta mono">03 — Inquiries</span>
   </div>
   <p>
     Have a project, system overhaul, or architecture question? Send a message to start a conversation.
@@ -79,3 +89,4 @@ description: "Advisory, architecture, and engineering consulting services."
     </a>
   </p>
 </div>
+

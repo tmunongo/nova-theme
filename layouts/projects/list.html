@@ -1,10 +1,8 @@
 {{ define "main" }}
   <div class="page-header">
-    <h1>{{ .Title | default "The Forge" }}</h1>
+    <h1>{{ with .Params.title }}{{ . }}{{ else }}{{ site.Params.labels.projects | default "Projects" }}{{ end }}</h1>
     {{ with .Description | default .Params.subtitle }}
       <p class="page-subtitle">{{ . }}</p>
-    {{ else }}
-      <p class="page-subtitle">Projects, experiments, and things I've built</p>
     {{ end }}
   </div>
 
@@ -16,10 +14,10 @@
             <a href="{{ .RelPermalink }}" class="project-title">{{ .Title }}</a>
             <span class="project-links mono">
               {{ with .Params.link }}
-                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">live &#8599;</a>
+                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">{{ site.Params.labels.project_live | default "live" }} &#8599;</a>
               {{ end }}
               {{ with .Params.github }}
-                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">gh &#8599;</a>
+                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">{{ site.Params.labels.project_source | default "source" }} &#8599;</a>
               {{ end }}
             </span>
           </div>
@@ -33,7 +31,7 @@
       </li>
     {{ else }}
       <div class="no-results mono">
-        <p>No projects documented yet.</p>
+        <p>{{ site.Params.labels.no_projects | default "No projects published yet." }}</p>
       </div>
     {{ end }}
   </ol>

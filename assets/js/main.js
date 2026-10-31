@@ -4,16 +4,16 @@
 
   // 1. Reading Progress Indicator (The Signal Bar)
   function initSignalIndicator() {
-    const indicator = document.getElementById('signal-indicator');
-    const bar = document.getElementById('signal-bar');
+    var indicator = document.getElementById('signal-indicator');
+    var bar = document.getElementById('signal-bar');
     if (!indicator || !bar) return;
 
     function handleScroll() {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
       if (docHeight > 0) {
-        const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
+        var progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
         bar.style.width = (progress * 100) + '%';
 
         if (progress > 0.01) {
@@ -30,23 +30,23 @@
 
   // 2. Add copy button to code blocks
   function initCodeCopy() {
-    const codeBlocks = document.querySelectorAll('pre, .highlight pre');
+    var codeBlocks = document.querySelectorAll('pre, .highlight pre');
     codeBlocks.forEach(function (pre) {
       if (pre.closest('.no-copy')) return;
 
-      const wrapper = document.createElement('div');
+      var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
       wrapper.appendChild(pre);
 
-      const copyBtn = document.createElement('button');
+      var copyBtn = document.createElement('button');
       copyBtn.className = 'code-copy-btn';
       copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
       copyBtn.textContent = 'Copy';
 
       copyBtn.addEventListener('click', function () {
-        const code = pre.querySelector('code') || pre;
-        const text = code.innerText;
+        var code = pre.querySelector('code') || pre;
+        var text = code.innerText;
 
         navigator.clipboard.writeText(text).then(function () {
           copyBtn.textContent = 'Copied!';
@@ -62,8 +62,33 @@
     });
   }
 
+  // 3. Theme Toggle & Persistence
+  function initThemeToggle() {
+    var toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+
+    toggleBtn.addEventListener('click', function () {
+      var currentTheme = document.documentElement.getAttribute('data-theme');
+      if (!currentTheme) {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        currentTheme = prefersDark ? 'dark' : 'light';
+      }
+
+      var nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      try {
+        localStorage.setItem('nova-theme', nextTheme);
+      } catch (e) {
+        // Storage unavailable (e.g. private browsing quota exceeded); theme change still applies
+      }
+      // Dispatch event so diagrams / canvas can re-render if needed
+      window.dispatchEvent(new CustomEvent('nova:theme-change', { detail: { theme: nextTheme } }));
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initSignalIndicator();
     initCodeCopy();
+    initThemeToggle();
   });
 })();

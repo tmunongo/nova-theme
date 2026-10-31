@@ -7,7 +7,7 @@
           {{ .Date.Format "January 02, 2006" }}
         </time>
         {{ with site.GetPage "section" "notes" }}
-          <span>&bull; <a href="{{ .RelPermalink }}#{{ $.File.ContentBaseName }}">View in Substrate Stream &rarr;</a></span>
+          <span>&bull; <a href="{{ .RelPermalink }}#{{ $.File.ContentBaseName }}">&larr; {{ $.Site.Params.labels.all_notes | default "All Notes" }}</a></span>
         {{ end }}
       </div>
       {{ with .Params.tags }}
