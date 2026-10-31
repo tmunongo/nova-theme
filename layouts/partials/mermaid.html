@@ -1,0 +1,76 @@
+<script type="module">
+  (async function renderMermaid() {
+    const mermaidElements = document.querySelectorAll(
+      'pre.mermaid, pre > code.language-mermaid, .mermaid, pre[data-language="mermaid"]'
+    );
+    if (!mermaidElements.length) return;
+
+    try {
+      const { default: mermaid } = await import(
+        'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
+      );
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        fontFamily: '"Berkeley Mono", "IBM Plex Mono", Consolas, monospace',
+        themeVariables: {
+          darkMode: true,
+          background: '#1a1c1f',
+          mainBkg: '#1a1c1f',
+          textColor: '#e7e7e2',
+          primaryColor: '#1e2227',
+          primaryTextColor: '#e7e7e2',
+          primaryBorderColor: '#6aa6ff',
+          lineColor: '#6aa6ff',
+          secondaryColor: '#16181b',
+          tertiaryColor: '#0f0f11',
+          noteBkgColor: '#16181b',
+          noteTextColor: '#e7e7e2',
+          noteBorderColor: '#26d07c',
+          actorBkg: '#1e2227',
+          actorBorder: '#6aa6ff',
+          actorTextColor: '#e7e7e2',
+          actorLineColor: '#6aa6ff',
+          signalColor: '#26d07c',
+          signalTextColor: '#e7e7e2',
+          labelBoxBkgColor: '#1e2227',
+          labelBoxBorderColor: '#6aa6ff',
+          labelTextColor: '#e7e7e2',
+          loopTextColor: '#e7e7e2',
+          edgeLabelBackground: '#1a1c1f',
+          clusterBkg: '#141618',
+          clusterBorder: 'rgba(255, 255, 255, 0.1)',
+          nodeBorder: '#6aa6ff',
+          defaultLinkColor: '#6aa6ff',
+          titleColor: '#e7e7e2',
+        },
+      });
+
+      for (let i = 0; i < mermaidElements.length; i++) {
+        const el = mermaidElements[i];
+        const targetPre = el.tagName.toLowerCase() === 'code' ? el.closest('pre') : el;
+        if (!targetPre || targetPre.dataset.mermaidRendered === 'true') continue;
+
+        const rawCode = el.textContent || '';
+        const id = 'mermaid-diagram-' + i;
+        const container = document.createElement('div');
+        container.className = 'mermaid-rendered-container';
+        container.style.overflowX = 'auto';
+        container.style.margin = '2rem 0';
+        container.style.textAlign = 'center';
+
+        try {
+          const { svg } = await mermaid.render(id, rawCode.trim());
+          container.innerHTML = svg;
+          targetPre.replaceWith(container);
+        } catch (err) {
+          console.error('Mermaid render error:', err);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not load Mermaid library:', e);
+    }
+  })();
+</script>

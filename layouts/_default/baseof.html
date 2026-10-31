@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="{{ site.LanguageCode | default "en" }}">
+  <head>
+    {{ partial "head.html" . }}
+    {{ block "head" . }}{{ end }}
+  </head>
+  <body>
+    {{ partial "signal-indicator.html" . }}
+    {{ partial "header.html" . }}
+
+    <main class="container">
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    {{ partial "footer.html" . }}
+    {{ partial "mermaid.html" . }}
+
+    {{ $mainJS := resources.Get "js/main.js" | resources.Minify | resources.Fingerprint }}
+    <script src="{{ $mainJS.RelPermalink }}" integrity="{{ $mainJS.Data.Integrity }}" defer></script>
+    {{ block "scripts" . }}{{ end }}
+  </body>
+</html>

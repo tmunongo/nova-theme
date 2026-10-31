@@ -1,0 +1,37 @@
+# theme.toml template for Hugo
+name = "Nova"
+license = "MIT"
+licenselink = "https://github.com/tmunongo/nova/blob/main/LICENSE"
+description = "A sleek, dark, terminal-inspired minimalist theme for engineers and writers."
+homepage = "https://github.com/tmunongo/nova"
+demosite = ""
+tags = [
+  "blog",
+  "minimal",
+  "portfolio",
+  "clean",
+  "dark",
+  "terminal",
+  "responsive",
+  "developer",
+  "typography",
+  "code-highlighting",
+  "mermaid",
+  "vanilla-js"
+]
+features = [
+  "dark mode",
+  "reading progress indicator",
+  "interactive tag & year filter",
+  "micro-essay notes stream",
+  "project showcase with live links",
+  "mermaid diagram support",
+  "code copy buttons",
+  "fast vanilla assets without heavy dependencies",
+  "seo and open graph ready"
+]
+min_version = "0.120.0"
+
+[author]
+  name = "Tawanda Munongo"
+  homepage = "https://github.com/tmunongo"

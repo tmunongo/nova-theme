@@ -1,0 +1,7 @@
+{{ $type := .Get "type" | default "note" }}
+<blockquote class="callout callout-{{ $type }}">
+  {{ with .Get "title" }}
+    <strong class="callout-title">{{ . }}</strong><br>
+  {{ end }}
+  {{ .Inner | markdownify }}
+</blockquote>

@@ -1,0 +1,75 @@
+baseURL = "https://example.org/"
+languageCode = "en-us"
+title = "Nova Observatory"
+theme = "nova"
+
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
+    guessSyntax = true
+    lineNos = false
+
+[params]
+  description = "A sleek, dark, terminal-inspired minimalist theme for engineers and writers."
+  logo_text = "nova"
+  # Unified container width: prevents jarring jumping between pages
+  container_width = "880px"
+
+  [params.author]
+    name = "Nova Author"
+    fediverse = "author@example.social"
+
+  [params.social]
+    github = "example"
+    fediverse = "https://example.social/@author"
+
+  [params.hero]
+    role = "Systems & Product Engineer"
+    title = ""
+    description = "Welcome to Nova. A dark, terminal-inspired theme built for systems thinkers, engineers, and digital craftsmen.<br><br>Fast, responsive, and designed with a unified reading width across all pages."
+
+  [params.cta]
+    title = "Need Something Built?"
+    text = "Available for select engineering, systems architecture, and advisory contracts."
+    button_text = "Visit The Workbench →"
+    url = "/consulting/"
+
+[menu]
+  [[menu.main]]
+    name = "Signal"
+    url = "/posts/"
+    weight = 10
+
+  [[menu.main]]
+    name = "Substrate"
+    url = "/notes/"
+    weight = 20
+
+  [[menu.main]]
+    name = "Observatory"
+    url = "/about/"
+    weight = 30
+
+  [[menu.main]]
+    name = "Forge"
+    url = "/projects/"
+    weight = 40
+
+  [[menu.main]]
+    name = "Library"
+    url = "/library/"
+    weight = 50
+
+  [[menu.main]]
+    name = "Workbench"
+    url = "/consulting/"
+    weight = 60
+    [menu.main.params]
+      class = "workbench-cta"

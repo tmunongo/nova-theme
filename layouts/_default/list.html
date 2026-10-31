@@ -1,0 +1,25 @@
+{{ define "main" }}
+  <div class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}
+      <p class="page-subtitle">{{ . }}</p>
+    {{ end }}
+  </div>
+
+  {{ if .Content }}
+    <div class="prose" style="margin-bottom: var(--space-8);">
+      {{ .Content }}
+    </div>
+  {{ end }}
+
+  <ol class="post-list">
+    {{ range .Pages }}
+      <li class="post-row">
+        <a href="{{ .RelPermalink }}" class="post-row-title">{{ .Title }}</a>
+        <time class="post-row-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+          {{ .Date.Format "Jan 02, 2006" }}
+        </time>
+      </li>
+    {{ end }}
+  </ol>
+{{ end }}

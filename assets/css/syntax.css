@@ -1,0 +1,34 @@
+/* Syntax Highlighting for Hugo / Chroma */
+.chroma {
+  background-color: var(--bg-1) !important;
+  color: var(--fg-0);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--hairline);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.chroma code {
+  background: transparent !important;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Tokens */
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: var(--accent-neon); font-weight: 500; } /* Keyword */
+.chroma .kt { color: var(--accent-sky); } /* Keyword.Type */
+.chroma .na { color: var(--accent-sky); } /* Name.Attribute */
+.chroma .nb { color: var(--accent-sky); } /* Name.Builtin */
+.chroma .nc { color: var(--accent-sky); font-weight: 600; } /* Name.Class */
+.chroma .nf, .chroma .fm { color: var(--accent-sky); } /* Name.Function */
+.chroma .nn { color: var(--fg-0); } /* Name.Namespace */
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: var(--accent-signal); } /* String */
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: var(--accent-rust); } /* Number */
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs, .chroma .cp, .chroma .cpf { color: #686862; font-style: italic; } /* Comment */
+.chroma .o, .chroma .ow { color: var(--fg-1); } /* Operator */
+.chroma .p { color: var(--fg-1); } /* Punctuation */
+.chroma .lnt { color: #484b50; margin-right: 0.8rem; user-select: none; } /* Line numbers */
+.chroma .hl { background-color: rgba(106, 166, 255, 0.1); display: block; width: 100%; } /* Highlighted line */

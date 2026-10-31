@@ -1,0 +1,23 @@
+{{ define "main" }}
+  <article class="page-single">
+    <header class="page-header">
+      {{ with .Params.kicker }}
+        <p class="section-kicker mono">{{ . }}</p>
+      {{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.subtitle | default .Description }}
+        <p class="lead">{{ . }}</p>
+      {{ end }}
+      {{ with .Params.status }}
+        <div class="header-status mono">
+          <span class="status-tag">Status</span>
+          <span class="status-text">{{ . }}</span>
+        </div>
+      {{ end }}
+    </header>
+
+    <div class="prose">
+      {{ .Content }}
+    </div>
+  </article>
+{{ end }}

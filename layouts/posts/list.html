@@ -1,0 +1,102 @@
+{{ define "main" }}
+  <div class="page-header">
+    <div class="page-title-row">
+      <h1>{{ .Title | default "The Signal" }}</h1>
+      {{ with .OutputFormats.Get "rss" }}
+        <a href="{{ .RelPermalink }}" aria-label="RSS Feed" class="rss-icon-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1"></circle>
+          </svg>
+        </a>
+      {{ end }}
+    </div>
+    {{ with .Description | default .Params.subtitle }}
+      <p class="page-subtitle">{{ . }}</p>
+    {{ else }}
+      <p class="page-subtitle">Technical writing, engineering, and the craft of software</p>
+    {{ end }}
+  </div>
+
+  {{ $posts := .Pages }}
+
+  <!-- Extract unique years -->
+  {{ $years := slice }}
+  {{ range $posts }}
+    {{ $year := .Date.Format "2006" }}
+    {{ if not (in $years $year) }}
+      {{ $years = $years | append $year }}
+    {{ end }}
+  {{ end }}
+
+  <!-- Extract unique tags with counts -->
+  {{ $tagsMap := dict }}
+  {{ range $posts }}
+    {{ range .Params.tags }}
+      {{ $tag := . }}
+      {{ $count := 1 }}
+      {{ if isset $tagsMap $tag }}
+        {{ $count = add (index $tagsMap $tag) 1 }}
+      {{ end }}
+      {{ $tagsMap = merge $tagsMap (dict $tag $count) }}
+    {{ end }}
+  {{ end }}
+
+  <!-- Filter Panel -->
+  <div class="filter-panel">
+    <div class="filter-row">
+      <span class="filter-label mono">Year</span>
+      <div class="filter-pills" id="year-pills">
+        <button class="filter-pill active" data-year="all" aria-pressed="true">All</button>
+        {{ range $years }}
+          <button class="filter-pill" data-year="{{ . }}" aria-pressed="false">{{ . }}</button>
+        {{ end }}
+      </div>
+    </div>
+
+    {{ if gt (len $tagsMap) 0 }}
+      <div class="filter-row">
+        <span class="filter-label mono">Tags</span>
+        <div class="filter-pills" id="tag-pills">
+          {{ range $tag, $count := $tagsMap }}
+            <button class="filter-pill" data-tag="{{ $tag }}" aria-pressed="false">
+              #{{ $tag }}<span class="pill-count">{{ $count }}</span>
+            </button>
+          {{ end }}
+        </div>
+      </div>
+    {{ end }}
+
+    <div class="filter-status mono">
+      <span id="post-count">{{ len $posts }} posts</span>
+      <button id="clear-filters" class="clear-btn hidden">&times; clear filters</button>
+    </div>
+  </div>
+
+  <!-- Posts list -->
+  <ol class="post-list" id="post-list">
+    {{ range $posts }}
+      {{ $tagsString := delimit (.Params.tags | default slice) "," }}
+      <li
+        class="post-row"
+        data-year="{{ .Date.Format "2006" }}"
+        data-tags="{{ $tagsString }}"
+      >
+        <a href="{{ .RelPermalink }}" class="post-row-title">{{ .Title }}</a>
+        <time class="post-row-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+          {{ .Date.Format "Jan 02, 2006" }}
+        </time>
+      </li>
+    {{ end }}
+  </ol>
+
+  <div id="no-results" class="no-results hidden mono">
+    No posts match the selected filters.
+  </div>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ $filterJS := resources.Get "js/filter.js" | resources.Minify | resources.Fingerprint }}
+  <script src="{{ $filterJS.RelPermalink }}" integrity="{{ $filterJS.Data.Integrity }}" defer></script>
+{{ end }}

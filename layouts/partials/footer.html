@@ -1,0 +1,33 @@
+<footer class="site-footer hairline-top">
+  <div class="container">
+    <div class="footer-inner">
+      <p class="mono copyright">
+        &copy; {{ now.Format "2006" }} {{ site.Params.author.name | default site.Title }}
+      </p>
+
+      <div class="social-links mono">
+        {{ with site.Params.social.github }}
+          <a href="https://github.com/{{ . }}" target="_blank" rel="noopener">GitHub</a>
+        {{ end }}
+
+        {{ with site.Params.social.fediverse }}
+          <a href="{{ . }}" target="_blank" rel="me noopener">Fediverse</a>
+        {{ end }}
+
+        {{ with site.Params.social.twitter }}
+          <a href="https://twitter.com/{{ . }}" target="_blank" rel="noopener">Twitter</a>
+        {{ end }}
+
+        {{ with site.GetPage "section" "posts" }}
+          <a href="{{ .RelPermalink }}index.xml">Signal RSS</a>
+        {{ else }}
+          <a href="{{ "index.xml" | relURL }}">RSS</a>
+        {{ end }}
+
+        {{ with site.GetPage "section" "notes" }}
+          <a href="{{ .RelPermalink }}index.xml">Substrate RSS</a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</footer>

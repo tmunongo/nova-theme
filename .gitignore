@@ -1,0 +1,13 @@
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Hugo build output
+resources/_gen/
+public/
+.hugo_build.lock

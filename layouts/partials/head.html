@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo {{ hugo.Version }}">
+
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
+
+{{ with .Description | default site.Params.description }}
+<meta name="description" content="{{ . }}">
+{{ end }}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+{{ with .Description | default site.Params.description }}
+<meta property="og:description" content="{{ . }}">
+{{ end }}
+<meta property="og:site_name" content="{{ site.Title }}">
+{{ with .Params.featured_image }}
+<meta property="og:image" content="{{ . | absURL }}">
+{{ end }}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ .Permalink }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+{{ with .Description | default site.Params.description }}
+<meta name="twitter:description" content="{{ . }}">
+{{ end }}
+{{ with site.Params.twitter_handle }}
+<meta name="twitter:site" content="@{{ . }}">
+<meta name="twitter:creator" content="@{{ . }}">
+{{ end }}
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+
+<!-- RSS Feeds -->
+{{ range .AlternativeOutputFormats -}}
+  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+{{ end -}}
+
+<!-- Bundled CSS Assets via Hugo Pipes -->
+{{ $tokens := resources.Get "css/tokens.css" }}
+{{ $main := resources.Get "css/main.css" }}
+{{ $syntax := resources.Get "css/syntax.css" }}
+{{ $css := slice $tokens $main $syntax | resources.Concat "css/nova.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+<!-- Custom Container Width Override if defined in site params -->
+{{ with site.Params.container_width }}
+<style>
+  :root {
+    --container-width: {{ . }};
+  }
+</style>
+{{ end }}
+
+<!-- Optional Umami Analytics -->
+{{ with site.Params.umami }}
+  {{ if .website_id }}
+  <script defer src="{{ .script_url | default "https://cloud.umami.is/script.js" }}" data-website-id="{{ .website_id }}"></script>
+  {{ end }}
+{{ end }}

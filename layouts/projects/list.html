@@ -1,0 +1,40 @@
+{{ define "main" }}
+  <div class="page-header">
+    <h1>{{ .Title | default "The Forge" }}</h1>
+    {{ with .Description | default .Params.subtitle }}
+      <p class="page-subtitle">{{ . }}</p>
+    {{ else }}
+      <p class="page-subtitle">Projects, experiments, and things I've built</p>
+    {{ end }}
+  </div>
+
+  <ol class="project-list">
+    {{ range .Pages.ByDate.Reverse }}
+      <li class="project-item">
+        <div class="project-header">
+          <div class="project-title-group">
+            <a href="{{ .RelPermalink }}" class="project-title">{{ .Title }}</a>
+            <span class="project-links mono">
+              {{ with .Params.link }}
+                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">live &#8599;</a>
+              {{ end }}
+              {{ with .Params.github }}
+                <a href="{{ . }}" target="_blank" rel="noopener" class="project-ext-link">gh &#8599;</a>
+              {{ end }}
+            </span>
+          </div>
+          <time class="project-date mono" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ .Date.Format "Jan 2006" }}
+          </time>
+        </div>
+        {{ with .Params.description }}
+          <p class="project-desc">{{ . }}</p>
+        {{ end }}
+      </li>
+    {{ else }}
+      <div class="no-results mono">
+        <p>No projects documented yet.</p>
+      </div>
+    {{ end }}
+  </ol>
+{{ end }}

@@ -1,0 +1,27 @@
+<header class="site-header hairline-bottom">
+  <div class="container">
+    <div class="header-inner">
+      <div class="site-title">
+        <a href="{{ site.Home.RelPermalink }}" class="mono">
+          {{ site.Params.logo_text | default site.Title }}
+        </a>
+      </div>
+
+      {{ if site.Menus.main }}
+      <nav class="site-nav" aria-label="Main Navigation">
+        {{ $currentPage := . }}
+        {{ range site.Menus.main }}
+          {{ $isActive := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.RelPermalink .URL) }}
+          <a
+            href="{{ .URL }}"
+            class="{{ if $isActive }}active{{ end }} {{ with .Params.class }}{{ . }}{{ end }}"
+            {{ if $isActive }}aria-current="page"{{ end }}
+          >
+            {{- .Name -}}
+          </a>
+        {{ end }}
+      </nav>
+      {{ end }}
+    </div>
+  </div>
+</header>
